@@ -4,7 +4,8 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-#define CYCLES 1000000
+//#define CYCLES 1000000 // à mettre pour le final
+#define CYCLES 10
 
 struct args {
     int id;
@@ -33,7 +34,7 @@ void *philosophe(void *args)
     while (count<CYCLES)
     {
         // philosophe pense
-        printf("pensanding Philosophe [%d]\n", id);
+        printf("pensanding Philosophe [%d]\n", id); // pensanding ? -> thinking ?
         if (left < right)
         {
             pthread_mutex_lock(&baguette[left]);
@@ -58,10 +59,17 @@ void *philosophe(void *args)
     return (NULL);
 }
 
-int main(){
+int main(int argc, char **argv){
     int philosophes;
-    printf("number of philosophers: \n");
-    scanf("%d", &philosophes);
+
+    if(argc != 2){
+        printf("Usage: %s <number_of_philosophers>\n", argv[0]);
+        return 1;
+    }
+
+    philosophes = atoi(argv[1]);
+    printf("Number of philosophers : %d\n", philosophes);
+
     
     pthread_t phil[philosophes];
     pthread_mutex_t baguette[philosophes];
