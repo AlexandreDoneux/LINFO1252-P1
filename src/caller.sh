@@ -29,7 +29,7 @@ run_and_measure() {
         line="$run"
         for n in "${threads_list[@]}"; do
             echo "Running: $executable with $n threads (run $run/$num_runs)"
-            time_val=$(/usr/bin/time --format=%e bash -c "'$executable' -j '$n' >/dev/null 2>/dev/null" 2>&1)
+            time_val=$(/usr/bin/time --format=%e bash -c "'$executable' '$n' >/dev/null 2>/dev/null" 2>&1)
             line="$line,$time_val"
         done
         echo "$line" >> "$csv_file"
@@ -41,10 +41,10 @@ run_and_measure() {
 # Example usage
 EXEC="./phil" # -> write the name instead of "./..." ?
 CSV="phil.csv"
-THREADS="1 2 4 8"
+THREADS="2 4 8 16"
 RUNS=3
 
 run_and_measure "$EXEC" "$CSV" "$THREADS" "$RUNS"
 
 
-# Still problem with measuring time... -> i'll work on it tomorrow ...
+# Still problem with measuring time... -> i'll work on it tomorrow ... => problem when calling the exec ?
