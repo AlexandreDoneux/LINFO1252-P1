@@ -86,7 +86,7 @@ void *reader(void *arg){
 
         printf("Reader %d READING\n", id);
 
-        for (int i=0; i<10000; i++); // section critique
+        for (int i=0; i<10000; i++); 
 
         printf("Reader %d finished reading\n", id);
 
