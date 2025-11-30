@@ -8,9 +8,8 @@
 
 # Those graphs represent the computation or access speed for different number of threads. Each one contains mean values ad standart deviation.
 # mean = sum off all values divided by the number of values
-# standart deviation = *voir formule en ligne*
+# standart deviation = see formula online, warning : not the one for population but for sample
 
-# Python script used to generate the graphs from the csv files.
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -32,9 +31,19 @@ def plot_thread_results(csv_path, graph_name):
     plt.ylabel("Execution Time")
     plt.grid(True)
     plt.tight_layout()
+
+    # Generate graphs in png
+    plt.savefig(f"results/{graph_name.replace(' ', '_').lower()}.png")
+
     plt.show()
 
 
-plot_thread_results("phil.csv", graph_name="Dining Philosophers Execution Time")
+
+
+plot_thread_results("results/phil.csv", graph_name="Dining Philosophers Execution Time")
+plot_thread_results("results/prod.csv", graph_name="Producer-consumer Execution Time")
+plot_thread_results("results/read.csv", graph_name="Readers-writers Execution Time")
+
+
 
 # adding saving as png
