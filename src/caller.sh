@@ -37,14 +37,13 @@ run_and_measure() {
 }
 
 # --------------
+# Main script execution
+# --------------
 
-# Example usage
-EXEC="./phil" # -> write the name instead of "./..." ?
-CSV="phil.csv"
-THREADS="2 4 8 16"
-RUNS=3
+THREADS="2 4 8 16 32"
+RUNS=5
 
-run_and_measure "$EXEC" "$CSV" "$THREADS" "$RUNS"
+run_and_measure "./phil" "phil.csv" "$THREADS" "$RUNS"
+run_and_measure "./prod" "prod.csv" "$THREADS" "$RUNS"
+run_and_measure "./read" "read.csv" "$THREADS" "$RUNS"
 
-
-# Still problem with measuring time... -> i'll work on it tomorrow ... => problem when calling the exec ?

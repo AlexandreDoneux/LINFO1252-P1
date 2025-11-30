@@ -4,8 +4,7 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-//#define CYCLES 1000000 // à mettre pour le final
-#define CYCLES 10
+#define CYCLES 1000000
 
 struct args {
     int id;
