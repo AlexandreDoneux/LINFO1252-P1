@@ -16,6 +16,9 @@ run_and_measure() {
         return 1
     fi
 
+    # Create results directory if it doesn't exist
+    mkdir -p "$(dirname "$csv_file")"
+
     # Prepare CSV header
     touch "$csv_file"
     echo -n "run_number" > "$csv_file"
@@ -40,10 +43,13 @@ run_and_measure() {
 # Main script execution
 # --------------
 
-THREADS="2 4 8 16 32"
-RUNS=5
+THREADS="2 4"
+#THREADS="2 4 8 16 32" -> put back for final solution
+RUNS=2 # put five for final solution
 
-run_and_measure "./phil" "phil.csv" "$THREADS" "$RUNS"
-run_and_measure "./prod" "prod.csv" "$THREADS" "$RUNS"
-run_and_measure "./read" "read.csv" "$THREADS" "$RUNS"
+run_and_measure "./src/phil" "results/phil.csv" "$THREADS" "$RUNS"
+run_and_measure "./src/prod" "results/prod.csv" "$THREADS" "$RUNS"
+run_and_measure "./src/read" "results/read.csv" "$THREADS" "$RUNS"
+
+
 
