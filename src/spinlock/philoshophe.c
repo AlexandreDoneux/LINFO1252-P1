@@ -1,0 +1,1 @@
+// Philosopher simulation using spinlocks

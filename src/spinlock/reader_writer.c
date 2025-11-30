@@ -1,0 +1,1 @@
+// eader-writer problem implementation using spinlocks in C
