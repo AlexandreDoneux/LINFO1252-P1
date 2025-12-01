@@ -17,11 +17,14 @@ void *run_func(void *arg) {
     int *args = (int *)arg;
     int id = args[0];
     int n_critical_sections = args[1];
+    printf("Thread %d starting, will execute %d critical sections.\n", id, n_critical_sections);
 
     for (int i = 0; i < n_critical_sections; i++) {
         // critical section
         lock(&lock_var); // accède bien à la variable lock_var ?
+        //printf("Thread %d in critical section %d\n", id, i);
         for (int k = 0; k < 10000; k++); // simulating work
+        //printf("Thread %d leaving critical section %d\n", id, i);
         unlock(&lock_var);
     }
     return NULL;
@@ -39,19 +42,24 @@ int main(int argc, char *argv[]) {
     int nb_threads = atoi(argv[1]);
     int n_critical_sections = 32768/nb_threads; // number of critical sections each thread will execute.
 
+    printf("Starting %d threads, each executing %d critical sections.\n", nb_threads, n_critical_sections);
 
     pthread_t threads[nb_threads];
-    int thread_args[2];
-    thread_args[1] = n_critical_sections;
+
 
     for (int i = 0; i < nb_threads; i++) {
-        thread_args[0] = i;
+        int thread_args[2];
+        thread_args[0] = i; // is overwritten before thread uses it?
+        thread_args[1] = n_critical_sections;
+
         pthread_create(&threads[i], NULL, run_func, &thread_args);
     }
 
     for (int i = 0; i < nb_threads; i++) {
         pthread_join(threads[i], NULL);
     }
+
+    printf("All threads completed.\n");
 
     return 0;
 }
