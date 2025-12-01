@@ -49,9 +49,11 @@ THREADS_SPINLOCK="1 2 4"
 #THREADS_SPINLOCK="1 2 4 8 16 32" -> put back for final solution
 RUNS=2 # put five for final solution
 
-run_and_measure "./src/phil" "results/phil.csv" "$THREADS" "$RUNS"
-run_and_measure "./src/prod" "results/prod.csv" "$THREADS" "$RUNS"
-run_and_measure "./src/read" "results/read.csv" "$THREADS" "$RUNS"
+run_and_measure "./src/posix/phil" "results/phil.csv" "$THREADS" "$RUNS"
+run_and_measure "./src/posix/prod" "results/prod.csv" "$THREADS" "$RUNS"
+run_and_measure "./src/posix/read" "results/read.csv" "$THREADS" "$RUNS"
+
+run_and_measure "./src/spinlock/test1" "results/spinlock_test1.csv" "$THREADS_SPINLOCK" "$RUNS" # running test-and-set algorithm
 
 
 

@@ -8,7 +8,7 @@ prod: src/posix/producer_consumer.c
 	gcc src/posix/producer_consumer.c -o src/posix/prod
 
 read: src/posix/reader_writer.c
-	gcc src/posix/reader_writer.c -o src/read
+	gcc src/posix/reader_writer.c -o src/posix/read
 
 test1: src/spinlock/spinlock.c src/spinlock/test-and-set.c
 	gcc -c src/spinlock/spinlock.c
