@@ -44,7 +44,9 @@ run_and_measure() {
 # --------------
 
 THREADS="2 4"
+THREADS_SPINLOCK="1 2 4"
 #THREADS="2 4 8 16 32" -> put back for final solution
+#THREADS_SPINLOCK="1 2 4 8 16 32" -> put back for final solution
 RUNS=2 # put five for final solution
 
 run_and_measure "./src/phil" "results/phil.csv" "$THREADS" "$RUNS"
