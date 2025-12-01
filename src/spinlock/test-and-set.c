@@ -9,7 +9,7 @@
 #include "spinlock.h" // includes the spinlock header file containing the lock and unlock function declarations.
 // The implementations inside spinlock.c will be linked during compilation.
 
-spinlock_t lock_var = 0; // initialize the spinlock variable.
+spinlock_t lock_var = 0; // initialize the spinlock variable. // put volatile ?
 
 void *run_func(void *arg) {
     //int id = *(int *)arg[0];
@@ -20,8 +20,8 @@ void *run_func(void *arg) {
     printf("Thread %d starting, will execute %d critical sections.\n", id, n_critical_sections);
 
     for (int i = 0; i < n_critical_sections; i++) {
-        // critical section
         lock(&lock_var); // accède bien à la variable lock_var ?
+        // critical section
         //printf("Thread %d in critical section %d\n", id, i);
         for (int k = 0; k < 10000; k++); // simulating work
         //printf("Thread %d leaving critical section %d\n", id, i);

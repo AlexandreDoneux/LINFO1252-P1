@@ -54,6 +54,7 @@ run_and_measure "./src/posix/prod" "results/prod.csv" "$THREADS" "$RUNS"
 run_and_measure "./src/posix/read" "results/read.csv" "$THREADS" "$RUNS"
 
 run_and_measure "./src/spinlock/test1" "results/spinlock_test1.csv" "$THREADS_SPINLOCK" "$RUNS" # running test-and-set algorithm
+run_and_measure "./src/spinlock/test2" "results/spinlock_test2.csv" "$THREADS_SPINLOCK" "$RUNS" # running test-and-test-and-set algorithm
 
 
 
