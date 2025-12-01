@@ -14,7 +14,12 @@ void lock(spinlock_t *lock) {
         "jnz     enter         ; retour à enter: si ZF n'est pas vrai"
         "ret"
     ); // course syllabi
-}
+
+    // besoin de mettre tout le test dans cette fonction ou uniquement xchg ?
+    // si on met tout le test, on a une boucle d'attente active (spin) dans cette fonction
+    // si on met uniquement xchg, on doit faire la boucle d'attente active dans la fonction appelante
+    // ici on fait la boucle d'attente active dans cette fonction -> donc on doit ajouter une étiquette enter pour revenir au début de la fonction si le lock est déjà pris
+
 
 
 void unlock(spinlock_t *lock) {
