@@ -43,11 +43,11 @@ run_and_measure() {
 # Main script execution
 # --------------
 
-THREADS="2 4"
-THREADS_SPINLOCK="1 2 4"
-#THREADS="2 4 8 16 32" -> put back for final solution
-#THREADS_SPINLOCK="1 2 4 8 16 32" -> put back for final solution
-RUNS=2 # put five for final solution
+#THREADS="2 4"
+#THREADS_SPINLOCK="1 2 4"
+THREADS="2 4 8 16 32" #-> put back for final solution
+THREADS_SPINLOCK="1 2 4 8 16 32" #-> put back for final solution
+RUNS=5 # put five for final solution
 
 run_and_measure "./src/posix/phil" "results/phil.csv" "$THREADS" "$RUNS"
 run_and_measure "./src/posix/prod" "results/prod.csv" "$THREADS" "$RUNS"
@@ -55,6 +55,10 @@ run_and_measure "./src/posix/read" "results/read.csv" "$THREADS" "$RUNS"
 
 run_and_measure "./src/spinlock/test1" "results/spinlock_test1.csv" "$THREADS_SPINLOCK" "$RUNS" # running test-and-set algorithm
 run_and_measure "./src/spinlock/test2" "results/spinlock_test2.csv" "$THREADS_SPINLOCK" "$RUNS" # running test-and-test-and-set algorithm
+
+run_and_measure "./src/spinlock/phil" "results/spinlock_phil.csv" "$THREADS" "$RUNS"
+run_and_measure "./src/spinlock/prod" "results/spinlock_prod.csv" "$THREADS" "$RUNS"
+run_and_measure "./src/spinlock/read" "results/spinlock_read.csv" "$THREADS" "$RUNS"
 
 
 
