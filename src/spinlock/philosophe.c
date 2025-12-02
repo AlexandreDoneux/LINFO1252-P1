@@ -53,6 +53,8 @@ void *philosophe(void *args)
             //printf("baguette left taken Philosophe [%d]\n", id);
         }
 
+        // philosophe mange
+        //printf("Philosophe [%d] eating\n", id);
         mange(id);
 
         mysem_post(&baguette[left]);
@@ -65,14 +67,18 @@ void *philosophe(void *args)
     return NULL;
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
     int philosophes;
-    printf("number of philosophers: \n");
-    if (scanf("%d", &philosophes) != 1 || philosophes <= 0) {
-        fprintf(stderr, "Invalid number of philosophers\n");
-        return EXIT_FAILURE;
+
+    if(argc != 2){
+        printf("Usage: %s <number_of_philosophers>\n", argv[0]);
+        return 1;
     }
+
+
+    philosophes = atoi(argv[1]);
+    printf("Number of philosophers : %d\n", philosophes);
 
     pthread_t *phil = malloc(philosophes * sizeof(pthread_t));
     mysem_t *baguette = malloc(philosophes * sizeof(mysem_t));
@@ -84,7 +90,7 @@ int main(void)
     }
 
     for (int i = 0; i < philosophes; i++) {
-        mysem_init(&baguette[i], 1);  
+        mysem_init(&baguette[i], 1);
     }
 
     for (int i = 0; i < philosophes; i++) {
