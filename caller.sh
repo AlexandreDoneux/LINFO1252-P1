@@ -47,7 +47,8 @@ run_and_measure() {
 #THREADS_SPINLOCK="1 2 4"
 THREADS="2 4 8 16 32" #-> put back for final solution
 THREADS_SPINLOCK="1 2 4 8 16 32" #-> put back for final solution
-RUNS=5 # put five for final solution
+#RUNS=5 # put five for final solution
+RUNS=1 # put five for final solution
 
 run_and_measure "./src/posix/phil" "results/phil.csv" "$THREADS" "$RUNS"
 run_and_measure "./src/posix/prod" "results/prod.csv" "$THREADS" "$RUNS"

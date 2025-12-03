@@ -1,4 +1,4 @@
-all: phil prod read test1 test2 spinlock_phil spinlock_prod spinlock_read
+all: caller.sh phil prod read test1 test2 spinlock_phil spinlock_prod spinlock_read
 	bash caller.sh
 
 phil: src/posix/philosophe.c
@@ -39,4 +39,4 @@ spinlock_read: src/spinlock/spinlock.c src/spinlock/mysem.c src/spinlock/reader_
 	gcc -o src/spinlock/read src/spinlock/spinlock.o src/spinlock/mysem.o src/spinlock/reader_writer.o
 
 clean:
-	rm -f src/posix/phil src/posix/prod src/posix/read src/posix/*.o src/spinlock/test1 src/spinlock/test2 src/spinlock/*.o
+	rm -f src/posix/phil src/posix/prod src/posix/read src/posix/*.o src/spinlock/test1 src/spinlock/test2 src/spinlock/phil src/spinlock/prod src/spinlock/read src/spinlock/*.o
