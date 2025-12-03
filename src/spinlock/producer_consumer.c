@@ -75,13 +75,13 @@ void *consumer(void *arg)
 
 int main(int argc, char *argv[])
 {
-    if (argc != 3) {
-        fprintf(stderr, "Usage: %s <nb_producers> <nb_consumers>\n", argv[0]);
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s <nb_threads>\n", argv[0]);
         return EXIT_FAILURE;
     }
 
-    int nb_producers = atoi(argv[1]);
-    int nb_consumers = atoi(argv[2]);
+    int nb_producers = atoi(argv[1])/2;
+    int nb_consumers = atoi(argv[1])/2;
 
     if (nb_producers <= 0 || nb_consumers <= 0) {
         fprintf(stderr, "nb_producers and nb_consumers must be > 0\n");

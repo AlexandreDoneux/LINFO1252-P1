@@ -18,10 +18,13 @@ struct args {
 
 void mange(int id)
 {
-    for (int i = 0; i < rand(); i++)
+/*
+    //printf("Philosophe [%d] mange\n", id);
+    for (int i = 0; i < 1000; i++)
     {
         // philosophe mange
     }
+*/
 }
 
 void *philosophe(void *args)

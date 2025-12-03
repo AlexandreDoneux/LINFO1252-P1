@@ -99,13 +99,13 @@ void *reader(void *arg) {
 }
 
 int main(int argc, char *argv[]) {
-    if (argc != 3) {
-        fprintf(stderr, "Usage: %s <nb_readers> <nb_writers>\n", argv[0]);
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s <nb_threads>\n", argv[0]);
         return EXIT_FAILURE;
     }
 
-    int nb_readers = atoi(argv[1]);
-    int nb_writers = atoi(argv[2]);
+    int nb_writers = atoi(argv[1])/2;
+    int nb_readers = atoi(argv[1])/2;
 
     if (nb_readers <= 0 || nb_writers <= 0) {
         fprintf(stderr, "nb_readers and nb_writers must be > 0\n");

@@ -4,8 +4,8 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-#define CYCLES 100
-//#define CYCLES 1000000 -> put back for real test
+//#define CYCLES 100
+#define CYCLES 1000000
 
 struct args {
     int id;
@@ -15,11 +15,13 @@ struct args {
 
 void mange(int id)
 {
+/*
     printf("Philosophe [%d] mange\n", id);
-    for (int i = 0; i < rand(); i++)
+    for (int i = 0; i < 1000; i++)
     {
         // philosophe mange
     }
+*/
 }
 
 void *philosophe(void *args)
