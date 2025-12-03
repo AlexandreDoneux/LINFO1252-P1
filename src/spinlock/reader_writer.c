@@ -6,7 +6,6 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-#include "spinlock.h"
 #include "mysem.h"
 
 #define TOTAL_WRITES 6400
@@ -15,9 +14,9 @@
 int wcount = 0; 
 int rcount = 0; 
 
-spinlock_t m_rcount = 0;
-spinlock_t m_wcount = 0;
-spinlock_t z = 0;
+mysem_t m_rcount;
+mysem_t m_wcount;
+mysem_t z;
 
 mysem_t wsem_db;
 mysem_t rsem_db;
@@ -32,13 +31,13 @@ void *writer(void *arg) {
 
         printf("[Writer %d] wants to write\n", id);
 
-        lock(&m_wcount);
+        mysem_wait(&m_wcount);
         wcount++;
         if (wcount == 1) {
             mysem_wait(&rsem_db);
             printf("[Writer %d] blocks readers\n", id);
         }
-        unlock(&m_wcount);
+        mysem_post(&m_wcount);
 
         mysem_wait(&wsem_db);
         printf("[Writer %d] WRITING...\n", id);
@@ -48,13 +47,13 @@ void *writer(void *arg) {
         mysem_post(&wsem_db);
         printf("[Writer %d] finished writing\n", id);
 
-        lock(&m_wcount);
+        mysem_wait(&m_wcount);
         wcount--;
         if (wcount == 0) {
             mysem_post(&rsem_db);
             printf("[Writer %d] unblocks readers (no writer waiting)\n", id);
         }
-        unlock(&m_wcount);
+        mysem_post(&m_wcount);
     }
 
     printf("[Writer %d] DONE (wrote %d times)\n", id, limit_writes);
@@ -68,30 +67,30 @@ void *reader(void *arg) {
 
         printf("[Reader %d] wants to read\n", id);
 
-        lock(&z);
+        mysem_wait(&z);
         mysem_wait(&rsem_db);
 
-        lock(&m_rcount);
+        mysem_wait(&m_rcount);
         rcount++;
         if (rcount == 1) {
             mysem_wait(&wsem_db);
             printf("[Reader %d] blocks writers (first reader)\n", id);
         }
-        unlock(&m_rcount);
+        mysem_post(&m_rcount);
 
         mysem_post(&rsem_db);
-        unlock(&z);
+        mysem_post(&z);
 
         printf("[Reader %d] READING...\n", id);
         for (int k = 0; k < 10000; k++);
 
-        lock(&m_rcount);
+        mysem_wait(&m_rcount);
         rcount--;
         if (rcount == 0) {
             mysem_post(&wsem_db);
             printf("[Reader %d] unblocks writers (last reader)\n", id);
         }
-        unlock(&m_rcount);
+        mysem_post(&m_rcount);
     }
 
     printf("[Reader %d] DONE (read %d times)\n", id, limit_reads);
@@ -120,6 +119,9 @@ int main(int argc, char *argv[]) {
 
     mysem_init(&wsem_db, 1); 
     mysem_init(&rsem_db, 1);
+    mysem_init(&m_rcount, 1);
+    mysem_init(&m_wcount, 1);
+    mysem_init(&z, 1);
 
     pthread_t readers[nb_readers];
     pthread_t writers[nb_writers];

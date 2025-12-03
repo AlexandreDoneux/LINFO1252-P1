@@ -79,19 +79,14 @@ int main(int argc, char **argv)
         return 1;
     }
 
-
     philosophes = atoi(argv[1]);
     printf("Number of philosophers : %d\n", philosophes);
 
-    pthread_t *phil = malloc(philosophes * sizeof(pthread_t));
-    mysem_t *baguette = malloc(philosophes * sizeof(mysem_t));
-    struct args *PhilArgs = malloc(philosophes * sizeof(struct args));
+    
+    pthread_t phil[philosophes];
+    mysem_t baguette[philosophes];
 
-    if (!phil || !baguette || !PhilArgs) {
-        fprintf(stderr, "malloc error\n");
-        return EXIT_FAILURE;
-    }
-
+    struct args PhilArgs[philosophes];
     for (int i = 0; i < philosophes; i++) {
         mysem_init(&baguette[i], 1);
     }

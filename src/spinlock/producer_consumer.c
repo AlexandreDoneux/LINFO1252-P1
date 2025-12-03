@@ -6,7 +6,6 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-#include "spinlock.h"
 #include "mysem.h"
 
 #define N 8         
@@ -16,7 +15,7 @@ int buffer[N];
 int in = 0; 
 int out = 0;
 
-spinlock_t mutex;  // remplace pthread_mutex_t
+mysem_t mutex;  // remplace pthread_mutex_t
 mysem_t empty;     // remplace sem_t empty
 mysem_t full;      // remplace sem_t full
 
@@ -34,14 +33,14 @@ void *producer(void *arg)
 
         mysem_wait(&empty);
 
-        lock(&mutex);
+        mysem_wait(&mutex); 
 
         buffer[in] = item;
         //printf("[Producer %d] produced %d at index %d\n", id, item, in);
         in = (in + 1) % N;
 
-        unlock(&mutex);
-        mysem_post(&full); 
+        mysem_post(&mutex); 
+        mysem_post(&full);      
     }
 
     //printf("[Producer %d] DONE (produced %d items)\n", id, limit_prod);
@@ -57,13 +56,13 @@ void *consumer(void *arg)
 
         mysem_wait(&full);
 
-        lock(&mutex);
+        mysem_wait(&mutex);
 
         item = buffer[out];
         //printf("[Consumer %d] consumed %d from index %d\n", id, item, out);
         out = (out + 1) % N;
 
-        unlock(&mutex);
+        mysem_post(&mutex);
         mysem_post(&empty);
 
         for (int k = 0; k < 10000; k++);
@@ -94,7 +93,7 @@ int main(int argc, char *argv[])
     printf("Producers: %d (each produces %d items)\n", nb_producers, limit_prod);
     printf("Consumers: %d (each consumes %d items)\n\n", nb_consumers, limit_cons);
 
-    mutex = 0; 
+    mysem_init(&mutex, 1); 
     mysem_init(&empty, N);
     mysem_init(&full, 0); 
 

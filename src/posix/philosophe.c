@@ -36,7 +36,7 @@ void *philosophe(void *args)
     while (count<CYCLES)
     {
         // philosophe pense
-        printf("pensanding Philosophe [%d]\n", id); // pensanding ? -> thinking ?
+        printf("Philosophe [%d] thinking\n", id); 
         if (left < right)
         {
             pthread_mutex_lock(&baguette[left]);
@@ -76,7 +76,7 @@ int main(int argc, char **argv){
     pthread_t phil[philosophes];
     pthread_mutex_t baguette[philosophes];
 
-    struct args *PhilArgs = malloc(philosophes * sizeof(struct args));    
+    struct args PhilArgs[philosophes];
     for (int i = 0; i < philosophes; i++) {
         pthread_mutex_init(&baguette[i], NULL);
     }
