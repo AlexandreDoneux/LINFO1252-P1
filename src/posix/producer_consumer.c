@@ -32,14 +32,14 @@ void *producer(void *arg)
         pthread_mutex_lock(&mutex);
 
         buffer[in] = item;
-        printf("[Producer %d] produced %d at index %d\n", id, item, in);
+        //printf("[Producer %d] produced %d at index %d\n", id, item, in);
         in = (in + 1) % N;
 
         pthread_mutex_unlock(&mutex);
         sem_post(&full);  
     }
 
-    printf("[Producer %d] DONE (produced %d items)\n", id, limit_prod);
+    //printf("[Producer %d] DONE (produced %d items)\n", id, limit_prod);
     return NULL;
 }
 
@@ -54,7 +54,7 @@ void *consumer(void *arg)
         pthread_mutex_lock(&mutex);
 
         item = buffer[out];
-        printf("[Consumer %d] consumed %d from index %d\n", id, item, out);
+        //printf("[Consumer %d] consumed %d from index %d\n", id, item, out);
         out = (out + 1) % N;
 
         pthread_mutex_unlock(&mutex);
@@ -63,7 +63,7 @@ void *consumer(void *arg)
         for (int k = 0; k < 10000; k++);
     }
 
-    printf("[Consumer %d] DONE (consumed %d items)\n", id, limit_cons);
+    //printf("[Consumer %d] DONE (consumed %d items)\n", id, limit_cons);
     return NULL;
 }
 

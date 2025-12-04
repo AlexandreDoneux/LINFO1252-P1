@@ -8,6 +8,7 @@
 
 #include "mysem.h"
 
+//#define CYCLES 100
 #define CYCLES 1000000
 
 struct args {

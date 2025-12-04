@@ -1,4 +1,5 @@
 #include "mysem.h"
+#include "spinlock.h" // needed ?
 
 void mysem_init(mysem_t *s, int value)
 {

@@ -17,7 +17,7 @@ void *run_func(void *arg) {
     int *args = (int *)arg;
     int id = args[0];
     int n_critical_sections = args[1];
-    printf("Thread %d starting, will execute %d critical sections.\n", id, n_critical_sections);
+    //printf("Thread %d starting, will execute %d critical sections.\n", id, n_critical_sections);
 
     for (int i = 0; i < n_critical_sections; i++) {
         lock(&lock_var); // accède bien à la variable lock_var ?

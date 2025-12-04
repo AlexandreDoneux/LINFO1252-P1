@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x # for debugging -> remove later
+#set -x # for debugging -> remove later
 
 # Function to run and measure execution time
 # Usage: run_and_measure <executable> <csv_file> "<threads_array>" <num_runs>
@@ -12,7 +12,7 @@ run_and_measure() {
 
     # Safety check
     if [[ -z "$executable" || -z "$csv_file" || -z "$threads_list" || -z "$num_runs" ]]; then
-        echo "Usage: run_and_measure <executable> <csv_file> \"<threads_array>\" <num_runs>"
+        #echo "Usage: run_and_measure <executable> <csv_file> \"<threads_array>\" <num_runs>"
         return 1
     fi
 
@@ -31,7 +31,7 @@ run_and_measure() {
     for run in $(seq 1 $num_runs); do
         line="$run"
         for n in "${threads_list[@]}"; do
-            echo "Running: $executable with $n threads (run $run/$num_runs)"
+            #echo "Running: $executable with $n threads (run $run/$num_runs)"
             time_val=$(/usr/bin/time --format=%e bash -c "'$executable' '$n' >/dev/null 2>/dev/null" 2>&1)
             line="$line,$time_val"
         done
@@ -47,8 +47,8 @@ run_and_measure() {
 #THREADS_SPINLOCK="1 2 4"
 THREADS="2 4 8 16 32" #-> put back for final solution
 THREADS_SPINLOCK="1 2 4 8 16 32" #-> put back for final solution
-#RUNS=5 # put five for final solution
-RUNS=1 # put five for final solution
+RUNS=5 # put five for final solution
+#RUNS=1 # put five for final solution
 
 run_and_measure "./src/posix/phil" "results/phil.csv" "$THREADS" "$RUNS"
 run_and_measure "./src/posix/prod" "results/prod.csv" "$THREADS" "$RUNS"
@@ -60,6 +60,50 @@ run_and_measure "./src/spinlock/test2" "results/spinlock_test2.csv" "$THREADS_SP
 run_and_measure "./src/spinlock/phil" "results/spinlock_phil.csv" "$THREADS" "$RUNS"
 run_and_measure "./src/spinlock/prod" "results/spinlock_prod.csv" "$THREADS" "$RUNS"
 run_and_measure "./src/spinlock/read" "results/spinlock_read.csv" "$THREADS" "$RUNS"
+
+echo ''
+echo ''
+
+echo posix philosophe results:
+cat results/phil.csv
+echo "=========================="
+echo ''
+
+echo posix producer-consumer results:
+cat results/prod.csv
+echo "=========================="
+echo ''
+
+echo posix reader-writer results:
+cat results/read.csv
+echo "=========================="
+echo ''
+
+
+echo spinlock test-and-set results:
+cat results/spinlock_test1.csv
+echo "=========================="
+echo ''
+
+echo spinlock test-and-test-and-set results:
+cat results/spinlock_test2.csv
+echo "=========================="
+echo ''
+
+
+echo spinlock philosophe results:
+cat results/spinlock_phil.csv
+echo "=========================="
+echo ''
+
+echo spinlock producer-consumer results:
+cat results/spinlock_prod.csv
+echo "=========================="
+echo ''
+
+echo spinlock reader-writer results:
+cat results/spinlock_read.csv
+echo "=========================="
 
 
 

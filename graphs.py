@@ -74,9 +74,9 @@ def plot_thread_results_multiple(csv_paths: list[str], graph_names: list[str]):
 
 
 
-plot_thread_results("results/phil.csv", graph_name="Dining Philosophers Execution Time")
-plot_thread_results("results/prod.csv", graph_name="Producer-consumer Execution Time")
-plot_thread_results("results/read.csv", graph_name="Readers-writers Execution Time")
+plot_thread_results("results/phil.csv", graph_name="Dining Philosophers Execution Time using Posix")
+plot_thread_results("results/prod.csv", graph_name="Producer-consumer Execution Time using Posix")
+plot_thread_results("results/read.csv", graph_name="Readers-writers Execution Time using Posix")
 
 plot_thread_results_multiple(["results/spinlock_test1.csv", "results/spinlock_test2.csv"], ["test-and-set", "test-and-test-and-set"])
 

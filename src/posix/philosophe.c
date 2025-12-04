@@ -4,7 +4,6 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-//#define CYCLES 100
 #define CYCLES 1000000
 
 struct args {
@@ -15,13 +14,7 @@ struct args {
 
 void mange(int id)
 {
-/*
-    printf("Philosophe [%d] mange\n", id);
-    for (int i = 0; i < 1000; i++)
-    {
-        // philosophe mange
-    }
-*/
+ //mange
 }
 
 void *philosophe(void *args)
@@ -36,26 +29,26 @@ void *philosophe(void *args)
     while (count<CYCLES)
     {
         // philosophe pense
-        printf("Philosophe [%d] thinking\n", id); 
+        //printf("Philosophe [%d] thinking\n", id);
         if (left < right)
         {
             pthread_mutex_lock(&baguette[left]);
-            printf("baguette left taken Philosophe [%d]\n", id);
+            //printf("baguette left taken Philosophe [%d]\n", id);
             pthread_mutex_lock(&baguette[right]);
-            printf("baguette right taken Philosophe [%d]\n", id);
+            //printf("baguette right taken Philosophe [%d]\n", id);
         }
         else
         {
             pthread_mutex_lock(&baguette[right]);
-            printf("baguette right taken Philosophe [%d]\n", id);
+            //printf("baguette right taken Philosophe [%d]\n", id);
             pthread_mutex_lock(&baguette[left]);
-            printf("baguette left taken Philosophe [%d]\n", id);
+            //printf("baguette left taken Philosophe [%d]\n", id);
         }
         mange(id);
         pthread_mutex_unlock(&baguette[left]);
-        printf("baguette left free Philosophe [%d]\n", id);
+        //printf("baguette left free Philosophe [%d]\n", id);
         pthread_mutex_unlock(&baguette[right]);
-        printf("baguette right free Philosophe [%d]\n", id);
+        //printf("baguette right free Philosophe [%d]\n", id);
         count++;
     }
     return (NULL);
