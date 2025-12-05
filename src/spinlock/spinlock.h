@@ -2,3 +2,6 @@ typedef volatile int spinlock_t; // defining a type that is acttually a volatile
 
 void lock(spinlock_t *lock);
 void unlock(spinlock_t *lock);
+
+void lock_ttas(spinlock_t *lock);
+void unlock_ttas(spinlock_t *lock);

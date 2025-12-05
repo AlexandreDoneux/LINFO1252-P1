@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#set -x # for debugging -> remove later
+set -x # for debugging -> remove later
 
 # Function to run and measure execution time
 # Usage: run_and_measure <executable> <csv_file> "<threads_array>" <num_runs>

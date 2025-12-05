@@ -12,21 +12,16 @@
 spinlock_t lock_var = 0; // initialize the spinlock variable. // put volatile ?
 
 void *run_func(void *arg) {
-    //int id = *(int *)arg[0];
-    //int n_critical_sections = *(int *)arg[1];
     int *args = (int *)arg;
     int id = args[0];
     int n_critical_sections = args[1];
-    printf("Thread %d starting, will execute %d critical sections.\n", id, n_critical_sections);
+    //printf("Thread %d starting, will execute %d critical sections.\n", id, n_critical_sections);
 
     for (int i = 0; i < n_critical_sections; i++) {
-        while(lock_var) ; // test-and-test-and-set: check if lock is free before trying to acquire it
-        lock(&lock_var); // accède bien à la variable lock_var ?
+        lock_ttas(&lock_var);
         // critical section
-        //printf("Thread %d in critical section %d\n", id, i);
-        for (int k = 0; k < 10000; k++); // simulating work
-        //printf("Thread %d leaving critical section %d\n", id, i);
-        unlock(&lock_var);
+        for (int k = 0; k < 10000; k++); // simulate work
+        unlock_ttas(&lock_var);
     }
     return NULL;
 }
@@ -50,7 +45,7 @@ int main(int argc, char *argv[]) {
 
     for (int i = 0; i < nb_threads; i++) {
         int thread_args[2];
-        thread_args[0] = i; // is overwritten before thread uses it?
+        thread_args[0] = i; // is overwritten before thread uses it ?
         thread_args[1] = n_critical_sections;
 
         pthread_create(&threads[i], NULL, run_func, &thread_args);

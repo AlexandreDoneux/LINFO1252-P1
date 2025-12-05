@@ -6,7 +6,8 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-#include "mysem.h"
+//#include "mysem.h"
+#include "spinlock.h"
 
 //#define CYCLES 100
 #define CYCLES 1000000
@@ -14,18 +15,14 @@
 struct args {
     int id;
     int philosophes;
-    mysem_t *baguette;   // au lieu de thread_mutex_t *baguette;
+    spinlock_t *baguette;   // au lieu de thread_mutex_t *baguette;
 };
 
 void mange(int id)
 {
-/*
-    //printf("Philosophe [%d] mange\n", id);
-    for (int i = 0; i < 1000; i++)
-    {
-        // philosophe mange
-    }
-*/
+	// philosophe mange
+	//printf("Philosophe [%d] mange\n", id);
+	//printf("Philosophe [%d] ne mange plus\n", id);
 }
 
 void *philosophe(void *args)
@@ -33,7 +30,7 @@ void *philosophe(void *args)
     int id = ((struct args*)args)->id;
     int left = id;
     int philosophes = ((struct args*)args)->philosophes;
-    mysem_t *baguette = ((struct args*)args)->baguette;
+    spinlock_t *baguette = ((struct args*)args)->baguette;
     int right = (left + 1) % philosophes;
     int count = 0;
 
@@ -44,16 +41,16 @@ void *philosophe(void *args)
 
         if (left < right)
         {
-            mysem_wait(&baguette[left]);
+            lock_ttas(&baguette[left]);
             //printf("baguette left taken Philosophe [%d]\n", id);
-            mysem_wait(&baguette[right]);
+            lock_ttas(&baguette[right]);
             //printf("baguette right taken Philosophe [%d]\n", id);
         }
         else
         {
-            mysem_wait(&baguette[right]);
+            lock_ttas(&baguette[right]);
             //printf("baguette right taken Philosophe [%d]\n", id);
-            mysem_wait(&baguette[left]);
+            lock_ttas(&baguette[left]);
             //printf("baguette left taken Philosophe [%d]\n", id);
         }
 
@@ -61,9 +58,9 @@ void *philosophe(void *args)
         //printf("Philosophe [%d] eating\n", id);
         mange(id);
 
-        mysem_post(&baguette[left]);
+        unlock_ttas(&baguette[left]);
         //printf("baguette left free Philosophe [%d]\n", id);
-        mysem_post(&baguette[right]);
+        unlock_ttas(&baguette[right]);
         //printf("baguette right free Philosophe [%d]\n", id);
 
         count++;
@@ -76,7 +73,7 @@ int main(int argc, char **argv)
     int philosophes;
 
     if(argc != 2){
-        printf("Usage: %s <number_of_philosophers>\n", argv[0]);
+        printf("Usage : %s <number_of_philosophers>\n", argv[0]);
         return 1;
     }
 
@@ -85,17 +82,19 @@ int main(int argc, char **argv)
 
     
     pthread_t phil[philosophes];
-    mysem_t baguette[philosophes];
+    spinlock_t baguette[philosophes];
 
     struct args PhilArgs[philosophes];
     for (int i = 0; i < philosophes; i++) {
-        mysem_init(&baguette[i], 1);
+        //mysem_init(&baguette[i], 1);
+        baguette[i] = 0; // initialize spinlock as unlocked
     }
 
     for (int i = 0; i < philosophes; i++) {
         PhilArgs[i].philosophes = philosophes;
         PhilArgs[i].baguette = baguette;
         PhilArgs[i].id = i;
+        //printf("Creating philosopher %d\n", i);
         pthread_create(&phil[i], NULL, philosophe, &PhilArgs[i]);
     }
 

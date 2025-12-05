@@ -53,6 +53,41 @@ int main() {
 */
 
 
-// Semaphore using spinlock ?
+void lock_ttas(spinlock_t *lock) {
+    while (1) {
 
-// later
+        // 1. First test: wait locally until lock appears free
+        while (*lock) {
+            // busy wait on cache
+        }
+
+        // 2. Try to acquire lock atomically
+        int acquired;
+        asm volatile (
+            "movl $1, %%eax\n"
+            "xchgl %%eax, %1\n"      // eax <-> *lock
+            "movl %%eax, %0\n"       // acquired = old lock value
+            : "=r"(acquired), "+m"(*lock)
+            :
+            : "%eax"
+        );
+
+        if (acquired == 0) {
+            // lock was free → now we own it
+            return;
+        }
+
+        // acquired == 1 → someone took the lock → repeat outer loop
+        // TTAS says: if busy, go back to the local spinning loop
+    }
+}
+
+void unlock_ttas(spinlock_t *lock) {
+    asm volatile(
+        "movl $0, %%eax\n"
+        "xchgl %%eax, %0\n"
+        : /* no output */
+        : "m" (*lock)
+        : "%eax"
+    );
+}
