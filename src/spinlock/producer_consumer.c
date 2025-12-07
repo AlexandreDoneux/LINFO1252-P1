@@ -15,7 +15,7 @@ int buffer[N];
 int in = 0; 
 int out = 0;
 
-mysem_t mutex;  // remplace pthread_mutex_t
+spinlock_t mutex;  // remplace pthread_mutex_t
 mysem_t empty;     // remplace sem_t empty
 mysem_t full;      // remplace sem_t full
 
@@ -33,13 +33,13 @@ void *producer(void *arg)
 
         mysem_wait(&empty);
 
-        mysem_wait(&mutex); 
+        lock_ttas(&mutex);
 
         buffer[in] = item;
         //printf("[Producer %d] produced %d at index %d\n", id, item, in);
         in = (in + 1) % N;
 
-        mysem_post(&mutex); 
+        unlock_ttas(&mutex);
         mysem_post(&full);      
     }
 
@@ -56,13 +56,13 @@ void *consumer(void *arg)
 
         mysem_wait(&full);
 
-        mysem_wait(&mutex);
+        lock_ttas(&mutex);
 
         item = buffer[out];
         //printf("[Consumer %d] consumed %d from index %d\n", id, item, out);
         out = (out + 1) % N;
 
-        mysem_post(&mutex);
+        unlock_ttas(&mutex);
         mysem_post(&empty);
 
         for (int k = 0; k < 10000; k++);
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
     printf("Producers: %d (each produces %d items)\n", nb_producers, limit_prod);
     printf("Consumers: %d (each consumes %d items)\n\n", nb_consumers, limit_cons);
 
-    mysem_init(&mutex, 1); 
+    //mysem_init(&mutex, 1);
     mysem_init(&empty, N);
     mysem_init(&full, 0); 
 

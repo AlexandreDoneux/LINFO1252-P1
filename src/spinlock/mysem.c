@@ -1,6 +1,8 @@
 /*
 
 // semaphore using ttas spinlock -> plus lent que ttas directement dans mysem
+// Avec cette version on un problème : on fait quand même des xchgl souvent. Car on utilise en effet un spinlock ttas mais une fois dans la section critique le sémaphore peut ne pas être disponible.
+// On fait donc un unlock et on retente un lock tout de suite après. Ce cas de verrou disponible et sémaphore indisponible est relativement fréquent et provoque beaucoup de xchgl inutiles.
 
 #include "mysem.h"
 #include "spinlock.h" // needed ?
@@ -28,7 +30,7 @@ void mysem_post(mysem_t *s)
 {
     lock_ttas(&s->lock);
     s->value++;
-    unlock(&s->lock);
+    unlock_ttas(&s->lock);
 }
 
 */

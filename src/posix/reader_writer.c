@@ -12,7 +12,7 @@ int wcount = 0;
 int rcount = 0;
 pthread_mutex_t m_rcount;
 pthread_mutex_t m_wcount;
-pthread_mutex_t z;
+pthread_mutex_t z; // pk 3ième mutex ? -> demander à Catherine
 
 sem_t wsem_db;
 sem_t rsem_db;

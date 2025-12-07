@@ -25,7 +25,7 @@ def plot_thread_results(csv_path, graph_name):
 
     # Plot
     plt.figure(figsize=(10, 6))
-    plt.bar(threads, averages, yerr=standard_deviations, ecolor="red", capsize=5)
+    plt.bar(threads, averages, yerr=standard_deviations, capsize=5)
 
     plt.title(graph_name)
     plt.xlabel("Number of Threads")
